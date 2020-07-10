@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "jenkins")
 public class HudsonSettings {
 
-	
+	@Value("${jenkins.cron}")
     private String cron;
     private boolean saveLog = false;
     private List<String> servers = new ArrayList<>();

@@ -28,11 +28,11 @@ import com.capitalone.dashboard.model.HudsonCollector;
 import com.capitalone.dashboard.model.HudsonJob;
 import com.capitalone.dashboard.repository.BaseCollectorRepository;
 import com.capitalone.dashboard.repository.BuildRepository;
-import com.capitalone.dashboard.repository.CollItemConfigHistoryRepository;
 import com.capitalone.dashboard.repository.ComponentRepository;
 import com.capitalone.dashboard.repository.ConfigurationRepository;
 import com.capitalone.dashboard.repository.HudsonCollectorRepository;
 import com.capitalone.dashboard.repository.HudsonJobRepository;
+import com.capitalone.dashboard.repository.SonarProfileRepostory;
 import com.google.common.collect.Lists;
 
 
@@ -47,7 +47,7 @@ public class HudsonCollectorTask extends CollectorTask<HudsonCollector> {
     private final HudsonCollectorRepository hudsonCollectorRepository;
     private final HudsonJobRepository hudsonJobRepository;
     private final BuildRepository buildRepository;
-    private final CollItemConfigHistoryRepository configRepository;
+    private final SonarProfileRepostory configRepository;
     private final HudsonClient hudsonClient;
     private final HudsonSettings hudsonSettings;
     private final ComponentRepository dbComponentRepository;
@@ -57,7 +57,7 @@ public class HudsonCollectorTask extends CollectorTask<HudsonCollector> {
     public HudsonCollectorTask(TaskScheduler taskScheduler,
                                HudsonCollectorRepository hudsonCollectorRepository,
                                HudsonJobRepository hudsonJobRepository,
-                               BuildRepository buildRepository, CollItemConfigHistoryRepository configRepository, HudsonClient hudsonClient,
+                               BuildRepository buildRepository, SonarProfileRepostory configRepository, HudsonClient hudsonClient,
                                HudsonSettings hudsonSettings,
                                ComponentRepository dbComponentRepository, 
                                ConfigurationRepository configurationRepository) {
@@ -114,9 +114,9 @@ public class HudsonCollectorTask extends CollectorTask<HudsonCollector> {
         List<String> activeServers = new ArrayList<>();
         activeServers.addAll(collector.getBuildServers());
 
-        clean(collector, existingJobs);
-
-        for (String instanceUrl : collector.getBuildServers()) {
+       // clean(collector, existingJobs);
+String instanceUrl = "https://builds.apache.org/";
+       // for (String instanceUrl : collector.getBuildServers()) {
             logBanner(instanceUrl);
             try {
                 Map<HudsonJob, Map<HudsonClient.jobData, Set<BaseModel>>> dataByJob = hudsonClient
@@ -132,9 +132,9 @@ public class HudsonCollectorTask extends CollectorTask<HudsonCollector> {
                 // rest exceptions to clear up at a later run.
                 log("Error getting jobs for: " + instanceUrl, start);
             }
-        }
+       // }
         // Delete jobs that will be no longer collected because servers have moved etc.
-        deleteUnwantedJobs(activeJobs, existingJobs, activeServers, collector);
+        //deleteUnwantedJobs(activeJobs, existingJobs, activeServers, collector);
     }
 
     /**
